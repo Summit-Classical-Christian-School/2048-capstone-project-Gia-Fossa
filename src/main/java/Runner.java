@@ -6,10 +6,24 @@ import java.util.Scanner;
  * This is your starting point. Build your game by adding classes
  * and implementing the game logic as described in your project handout.
  */
-public class Runner {
 
+public class Runner {
     public static void main(String[] args) {
-        // TODO: Implement your 2048 game here
+
+        GameManager gm = new GameManager();
+        gm.startGame();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Input Command: ");
+        String command = input.nextLine();
+        while (!command.equalsIgnoreCase("Q")) {
+            gm.command(command);
+            System.out.println("\n\nInput Command: ");
+            command = input.nextLine();
+        }
+        if (command.equalsIgnoreCase("Q")) {
+            gm.quitGame();
+        }
+        input.close();
 
     }
 }
