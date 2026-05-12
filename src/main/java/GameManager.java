@@ -24,37 +24,8 @@ public class GameManager{
     System.out.println("Welcome " + this.name.toUpperCase() + "!\n\n");
     displayHelpMenu();
   //spawn 2 new tiles
-    int row;
-    int col;
-
-    while(true){
-        row = (int)(Math.random() * 4);
-        col = (int)(Math.random() * 4);
-
-        if(board.getTile(row, col).isEmpty()){
-            break;
-        }
-    }
-
-    int value = (Math.random() < 0.9) ? 2 : 4;
-    board.addNumberTile(row, col, value);
-
-    // spawn new tile
-    int row2;
-    int col2;
-
-    while(true){
-        row2 = (int)(Math.random() * 4);
-        col2 = (int)(Math.random() * 4);
-
-        if(board.getTile(row2, col2).isEmpty()){
-            break;
-        }
-    }
-
-    int value2 = (Math.random() < 0.9) ? 2 : 4;
-    board.addNumberTile(row2, col2, value2);
-
+  spawnTile();
+  spawnTile();
     
   //start move count as 0
     this.moveCount = 0;
@@ -118,7 +89,23 @@ public class GameManager{
     System.out.println(board);
     System.out.println("Score: " + board.getScore());
 }
-  
+  private void spawnTile(){
+     //spawn new tiles
+    int row;
+    int col;
+
+    while(true){
+        row = (int)(Math.random() * 4);
+        col = (int)(Math.random() * 4);
+
+        if(board.getTile(row, col).isEmpty()){
+            break;
+        }
+    }
+
+    int value = (Math.random() < 0.9) ? 2 : 4;
+    board.addNumberTile(row, col, value);
+  }
 
   private void statusUpdate(){
     System.out.println("Name: " + this.name);
