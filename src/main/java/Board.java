@@ -82,6 +82,10 @@ public class Board{
  * 
  * @param direction the direction to determine the direction of the slide
  */
+/**
+ * Precondition: The string direction must be either w, s, d, or a, and the grid must not be empty
+ * Postcondition: The method correctly calls the slide method associated with the right direction
+ */
   public void slide(String direction){
     if(direction.equalsIgnoreCase("W")){
       slideUp();
@@ -100,6 +104,10 @@ public class Board{
   }
   /**compresses values, merges them, then slides them to the right
    * 
+   */
+  /**
+   * Precondition: a board is created that isn't full
+   * Postcondition: all tiles are correctly merged to the right and are all on the right side
    */
 private void slideRight(){
 
