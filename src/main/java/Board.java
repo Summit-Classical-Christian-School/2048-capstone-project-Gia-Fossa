@@ -66,15 +66,16 @@ public class Board{
     }
       
     for (int col = 0; col < grid[0].length; col++) {
-      for (int row = 0; row < grid.length-1; row++) {
-        // use arr[row][col]
-        int value3 = grid[col][row].getValue();
-        int value4 = grid[col][row+1].getValue();
-        if(value3 == value4){
-          return true;
+    for (int row = 0; row < grid.length - 1; row++) {
+
+        int value3 = grid[row][col].getValue();
+        int value4 = grid[row + 1][col].getValue();
+
+        if (value3 == value4) {
+            return true;
         }
-       }
     }
+}
       return false;
   }
 
