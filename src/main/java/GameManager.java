@@ -21,7 +21,7 @@ public class GameManager{
     Scanner input = new Scanner(System.in);
     System.out.println("Enter name: ");
     this.name = input.nextLine();
-    System.out.println("Welcome " + this.name + "!\n\n");
+    System.out.println("Welcome " + this.name.toUpperCase() + "!\n\n");
     displayHelpMenu();
   //spawn 2 new tiles
     int row;
@@ -87,7 +87,12 @@ public class GameManager{
     //spawn new tile
   
     // perform move
-  
+  if(!this.board.hasValidMove()){
+    quitGameLoss();
+  }
+  if(this.board.hasWin()){
+    quitGameWin();
+  }
     this.board.slide(direction);
     // update move count + history
     this.moveCount++;
@@ -122,7 +127,9 @@ public class GameManager{
   }
 
   private void showHistory(){
-    System.out.println(this.moveHistory);
+    for(int i = 0; i < moveHistory.size(); i++){
+      System.out.println(moveHistory.get(i));
+    }
   }
 
   private void displayHelpMenu(){
@@ -131,11 +138,20 @@ public class GameManager{
     System.out.println("P - show the player status line \n? - redisplay the help menu \nQ - quit the game \nH - show history");
   }
 
-  public void quitGame(){
+  public void quitGameLoss(){
+    System.out.println("You have no valid moves.");
+    System.out.println("Final Score: " + this.board.getScore());
+    System.out.println("Final Board: + this.board.toString()")
+    System.out.println("Total Moves: " + this.moveCount);
+    System.out.println("Thank you for playing 2048!");
+  }
+
+  public void quitGameWin(){
     System.out.println("Final Score: " + this.board.getScore());
     System.out.println("Total Moves: " + this.moveCount);
     System.out.println("Thank you for playing 2048!");
   }
+ 
  
 
 
