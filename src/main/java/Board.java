@@ -2,7 +2,9 @@ public class Board{
 
   private Tile[][] grid;
   private int score;
-
+  /**
+ * creates board with a grid filled with empty tiles
+ */
   public Board(){
     this.grid = new Tile[4][4];
     for (int row = 0; row < grid.length; row++) {
@@ -16,12 +18,20 @@ public class Board{
   public int getScore(){
     return this.score;
   }
-
+/** adds a number tile to the board
+ * 
+ * @param row the row to add the tile
+ * @param col the col to add the tile
+ * @param val the value of the added tile
+ */
   public void addNumberTile(int row, int col, int val){
     grid[row][col] = new NumberTile(val);
     
   }
-
+/**checks for a 2048 in the grid to enable win
+ * 
+ * @return boolean hasWin returns true if there is a 2048
+ */
   public boolean hasWin(){
     for (Tile[] row : grid) {
       for (Tile element : row) {
@@ -33,7 +43,10 @@ public class Board{
     }
     return false;
   }
-
+/**checks for a valid move in the grid
+ * 
+ * @return boolean hasValidMove if a valid move exists
+ */
   public boolean hasValidMove(){
     for (Tile[] row : grid) {
       for (Tile element : row) {
@@ -65,156 +78,10 @@ public class Board{
       return false;
   }
 
-
-
-  
- private void slideRight(){
-   for(int row = 0; row < grid.length; row++){
-
-        // merge
-        for(int col = 0; col < grid[0].length - 1; col++){
-            if(!grid[row][col].isEmpty()){
-                if(grid[row][col].getValue() == grid[row][col + 1].getValue()){
-                  grid[row][col+1].mergeIncrement();
-                  this.score += grid[row][col+1].getValue();
-                    grid[row][col] = new EmptyTile();
-                    col++;
-                }
-            }
-        }
-
-        // shift right
-        int curIndex = grid[0].length - 1;
-
-        for(int i = grid[0].length - 1; i >= 0; i--){
-            if(!grid[row][i].isEmpty()){
-
-                if(i != curIndex){
-                    grid[row][curIndex] = grid[row][i];
-                    grid[row][i] = new EmptyTile();
-                }
-
-                curIndex--;
-            }
-        }
-
-        // fill remaining left side
-        for(int col = curIndex; col >= 0; col--){
-            grid[row][col] = new EmptyTile();
-        }
-    }
-  }
-  
-   public void slideLeft(){  //make prvate after testing
-    for(int row = 0; row < grid.length; row++){
- 
-      //merging all tiles
-      for(int col = grid[0].length-1; col > 0; col--){
-        if(!grid[row][col].isEmpty()){
-            if(grid[row][col].getValue() == grid[row][col-1].getValue()){
-              grid[row][col-1].mergeIncrement();
-              this.score += grid[row][col-1].getValue();
-              grid[row][col] = new EmptyTile();
-              col--;
-            }
-        }
-       
-      }
-     
-      
-    //shift all tiles over to the left - create new array, copy over every non empty tile
-      int curIndex = 0;
-      for(int i = 0; i < grid[0].length; i++){
-       if(!grid[row][i].isEmpty()){
-          if(i != curIndex){
-        grid[row][curIndex] = grid[row][i];
-        grid[row][i] = new EmptyTile();
-        }
-    curIndex++;
-    }
-        
-      }
-      //fill rest of array with empty tiles after shifted
-      for(int col = curIndex; col < grid[0].length; col++){
-    grid[row][col] = new EmptyTile();
-      }
-      
-      
-    }
-  }
-   private void slideUp(){
-    for(int col = 0; col < grid[0].length; col++){
-
-        // merge
-        for(int row = grid.length - 1; row > 0; row--){
-            if(!grid[row][col].isEmpty()){
-                if(grid[row][col].getValue() == grid[row - 1][col].getValue()){
-                   grid[row-1][col].mergeIncrement();
-                    this.score += grid[row-1][col].getValue();
-                    grid[row][col] = new EmptyTile();
-                    row--;
-                }
-            }
-        }
-
-        // shift up
-        int curIndex = 0;
-
-        for(int i = 0; i < grid.length; i++){
-            if(!grid[i][col].isEmpty()){
-
-                if(i != curIndex){
-                    grid[curIndex][col] = grid[i][col];
-                    grid[i][col] = new EmptyTile();
-                }
-
-                curIndex++;
-            }
-        }
-
-        // fill remaining bottom
-        for(int row = curIndex; row < grid.length; row++){
-            grid[row][col] = new EmptyTile();
-        }
-    }
-}
-   private void slideDown(){
-    for(int col = 0; col < grid[0].length; col++){
-
-        // merge
-        for(int row = 0; row < grid.length - 1; row++){
-            if(!grid[row][col].isEmpty()){
-                if(grid[row][col].getValue() == grid[row + 1][col].getValue()){
-                   grid[row+1][col].mergeIncrement();
-                    this.score += grid[row+1][col].getValue();
-                    grid[row][col] = new EmptyTile();
-                    row++;
-                }
-            }
-        }
-
-        // shift down
-        int curIndex = grid.length - 1;
-
-        for(int i = grid.length - 1; i >= 0; i--){
-            if(!grid[i][col].isEmpty()){
-
-                if(i != curIndex){
-                    grid[curIndex][col] = grid[i][col];
-                    grid[i][col] = new EmptyTile();
-                }
-
-                curIndex--;
-            }
-        }
-
-        // fill remaining top
-        for(int row = curIndex; row >= 0; row--){
-            grid[row][col] = new EmptyTile();
-        }
-    }
-}
-  
+/**calls the slide method according to the direction given
+ * 
+ * @param direction the direction to determine the direction of the slide
+ */
   public void slide(String direction){
     if(direction.equalsIgnoreCase("W")){
       slideUp();
@@ -231,11 +98,265 @@ public class Board{
    
     
   }
+  /**compresses values, merges them, then slides them to the right
+   * 
+   */
+private void slideRight(){
+
+   for(int row = 0; row < grid.length; row++){
+
+    // compress right
+   int curIndex = grid[0].length - 1;
+
+    for(int col = grid[0].length - 1; col >= 0; col--){
+
+      if(!grid[row][col].isEmpty()){
+
+                if(col != curIndex){
+                    grid[row][curIndex] = grid[row][col];
+                    grid[row][col] = new EmptyTile();
+                }
+
+                curIndex--;
+            }
+        }
+
+        for(int col = curIndex; col >= 0; col--){
+            grid[row][col] = new EmptyTile();
+        }
+
+        // merge
+        for(int col = grid[0].length - 1; col > 0; col--){
+
+            if(!grid[row][col].isEmpty() &&
+               grid[row][col].getValue() == grid[row][col - 1].getValue()){
+
+                grid[row][col].mergeIncrement();
+                this.score += grid[row][col].getValue();
+
+                grid[row][col - 1] = new EmptyTile();
+
+                col--;
+            }
+        }
+
+        // compress again
+        curIndex = grid[0].length - 1;
+
+        for(int col = grid[0].length - 1; col >= 0; col--){
+
+            if(!grid[row][col].isEmpty()){
+
+                if(col != curIndex){
+                    grid[row][curIndex] = grid[row][col];
+                    grid[row][col] = new EmptyTile();
+                }
+
+                curIndex--;
+            }
+        }
+
+        for(int col = curIndex; col >= 0; col--){
+            grid[row][col] = new EmptyTile();
+        }
+    }
+}
+  /**compresses values, merges them, then slides them to the left
+   * 
+   */
+private void slideLeft(){
+
+    for(int row = 0; row < grid.length; row++){
+
+        // compress left
+        int curIndex = 0;
+
+        for(int col = 0; col < grid[0].length; col++){
+
+            if(!grid[row][col].isEmpty()){
+
+                if(col != curIndex){
+                    grid[row][curIndex] = grid[row][col];
+                    grid[row][col] = new EmptyTile();
+                }
+
+                curIndex++;
+            }
+        }
+
+        for(int col = curIndex; col < grid[0].length; col++){
+            grid[row][col] = new EmptyTile();
+        }
+
+        // merge
+        for(int col = 0; col < grid[0].length - 1; col++){
+
+            if(!grid[row][col].isEmpty() &&
+               grid[row][col].getValue() == grid[row][col + 1].getValue()){
+
+                grid[row][col].mergeIncrement();
+                this.score += grid[row][col].getValue();
+
+                grid[row][col + 1] = new EmptyTile();
+
+                col++;
+            }
+        }
+
+        // compress again
+        curIndex = 0;
+
+        for(int col = 0; col < grid[0].length; col++){
+
+            if(!grid[row][col].isEmpty()){
+
+                if(col != curIndex){
+                    grid[row][curIndex] = grid[row][col];
+                    grid[row][col] = new EmptyTile();
+                }
+
+                curIndex++;
+            }
+        }
+
+        for(int col = curIndex; col < grid[0].length; col++){
+            grid[row][col] = new EmptyTile();
+        }
+    }
+}
+/**compresses values, merges them, then slides them up
+   * 
+   */
+   private void slideUp(){
+
+    for(int col = 0; col < grid[0].length; col++){
+
+        // compress up
+        int curIndex = 0;
+
+        for(int row = 0; row < grid.length; row++){
+
+            if(!grid[row][col].isEmpty()){
+
+                if(row != curIndex){
+                    grid[curIndex][col] = grid[row][col];
+                    grid[row][col] = new EmptyTile();
+                }
+
+                curIndex++;
+            }
+        }
+
+        for(int row = curIndex; row < grid.length; row++){
+            grid[row][col] = new EmptyTile();
+        }
+
+        // merge
+        for(int row = 0; row < grid.length - 1; row++){
+
+            if(!grid[row][col].isEmpty() &&
+               grid[row][col].getValue() == grid[row + 1][col].getValue()){
+
+                grid[row][col].mergeIncrement();
+                this.score += grid[row][col].getValue();
+
+                grid[row + 1][col] = new EmptyTile();
+
+                row++;
+            }
+        }
+
+        // compress again
+        curIndex = 0;
+
+        for(int row = 0; row < grid.length; row++){
+
+            if(!grid[row][col].isEmpty()){
+
+                if(row != curIndex){
+                    grid[curIndex][col] = grid[row][col];
+                    grid[row][col] = new EmptyTile();
+                }
+
+                curIndex++;
+            }
+        }
+
+        for(int row = curIndex; row < grid.length; row++){
+            grid[row][col] = new EmptyTile();
+        }
+    }
+}
+/**compresses values, merges them, then slides them down
+   * 
+   */
+   private void slideDown(){
+
+    for(int col = 0; col < grid[0].length; col++){
+
+        // compress down
+        int curIndex = grid.length - 1;
+
+        for(int row = grid.length - 1; row >= 0; row--){
+
+            if(!grid[row][col].isEmpty()){
+
+                if(row != curIndex){
+                    grid[curIndex][col] = grid[row][col];
+                    grid[row][col] = new EmptyTile();
+                }
+
+                curIndex--;
+            }
+        }
+
+        for(int row = curIndex; row >= 0; row--){
+            grid[row][col] = new EmptyTile();
+        }
+
+        // merge
+        for(int row = grid.length - 1; row > 0; row--){
+
+            if(!grid[row][col].isEmpty() &&
+               grid[row][col].getValue() == grid[row - 1][col].getValue()){
+
+                grid[row][col].mergeIncrement();
+                this.score += grid[row][col].getValue();
+
+                grid[row - 1][col] = new EmptyTile();
+
+                row--;
+            }
+        }
+
+        // compress again
+        curIndex = grid.length - 1;
+
+        for(int row = grid.length - 1; row >= 0; row--){
+
+            if(!grid[row][col].isEmpty()){
+
+                if(row != curIndex){
+                    grid[curIndex][col] = grid[row][col];
+                    grid[row][col] = new EmptyTile();
+                }
+
+                curIndex--;
+            }
+        }
+
+        for(int row = curIndex; row >= 0; row--){
+            grid[row][col] = new EmptyTile();
+        }
+    }
+}
  
 public Tile getTile(int row, int col){
     return grid[row][col];
 }
-  
+  /**returns grid of the display symbols
+   * @return string of the board
+   */
   public String toString(){
     String board = "";
     for (Tile[] row : grid) {
