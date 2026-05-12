@@ -21,7 +21,7 @@ public class Runner {
             command = input.nextLine();
         }
         if (command.equalsIgnoreCase("Q")) {
-            gm.quitGame();
+            gm.quitGameIncomplete();
         }
         input.close();
 

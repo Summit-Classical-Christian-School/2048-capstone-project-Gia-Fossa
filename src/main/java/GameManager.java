@@ -139,7 +139,7 @@ public class GameManager{
   }
 
   public void quitGameLoss(){
-    System.out.println("You have no valid moves.");
+    System.out.println("You have no valid moves. Game over " + this.name);
     System.out.println("Final Score: " + this.board.getScore());
     System.out.println("Final Board: + this.board.toString()")
     System.out.println("Total Moves: " + this.moveCount);
@@ -147,12 +147,21 @@ public class GameManager{
   }
 
   public void quitGameWin(){
+    System.out.println("You have won 2048! Congrats " + this.name + "!");
     System.out.println("Final Score: " + this.board.getScore());
+    System.out.println("Final Board: + this.board.toString()")
     System.out.println("Total Moves: " + this.moveCount);
     System.out.println("Thank you for playing 2048!");
   }
  
- 
+ public void quitGameIncomplete(){
+    System.out.println("Game is Incomplete but ended. Nice try " + this.name);
+    System.out.println("Final Score: " + this.board.getScore());
+    System.out.println("Final Board: + this.board.toString()")
+    System.out.println("Total Moves: " + this.moveCount);
+    System.out.println("Thank you for playing 2048!");
+  }
+
 
 
 
