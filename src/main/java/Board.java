@@ -107,9 +107,7 @@ public class Board{
   
    public void slideLeft(){  //make prvate after testing
     for(int row = 0; row < grid.length; row++){
- for(Tile tile : grid[row]){
-    
-      }
+ 
       //merging all tiles
       for(int col = grid[0].length-1; col > 0; col--){
         if(!grid[row][col].isEmpty()){

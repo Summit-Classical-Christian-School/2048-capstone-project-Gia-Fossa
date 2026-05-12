@@ -14,6 +14,7 @@ public class Runner {
         gm.startGame();
         Scanner input = new Scanner(System.in);
         System.out.println("Input Command: ");
+     
         String command = input.nextLine();
         while (!command.equalsIgnoreCase("Q")) {
             gm.command(command);
